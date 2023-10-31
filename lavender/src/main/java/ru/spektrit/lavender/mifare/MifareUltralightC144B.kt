@@ -1,6 +1,7 @@
-package ru.spektrit.lavender
+package ru.spektrit.lavender.mifare
 
 import android.nfc.tech.MifareUltralight
+import ru.spektrit.lavender.NfcTagHelper
 import ru.spektrit.lavender.exceptions.WrongPackSizeException
 import ru.spektrit.lavender.exceptions.WrongPwdSizeException
 import ru.spektrit.lavender.tagtypes.TYPE_ULTRALIGHT_C
