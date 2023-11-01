@@ -50,6 +50,7 @@ class MifareUltralightC144B (private val mifareTag: MifareUltralight) : NfcTagHe
     *
     * NOTE: If password was already set, requires to perform [auth] first
     * @param pack 2-byte long password acknowledgement code
+    * @throws WrongPackSizeException when provided PACK is not exactly 2 bytes long
     */
    @Throws(WrongPackSizeException::class)
    fun setPACK(pack : ByteArray) {
@@ -63,29 +64,31 @@ class MifareUltralightC144B (private val mifareTag: MifareUltralight) : NfcTagHe
     * Tag PWD setter
     *
     * NOTE: If password was already set, requires to perform [auth] first
-    * @param pass 4-byte long password
+    * @param pwd 4-byte long password
+    * @throws WrongPwdSizeException when provided PWD is not exactly 4 bytes long
     */
    @Throws(WrongPwdSizeException::class)
-   fun setPWD(pass : ByteArray){
-      if (pass.size != 4) { throw WrongPwdSizeException() }
-      mifareTag.writePage(43, pass)
+   fun setPWD(pwd : ByteArray){
+      if (pwd.size != 4) { throw WrongPwdSizeException() }
+      mifareTag.writePage(43, pwd)
       // NOT THOROUGHLY TESTED
    }
 
 
    /**
     * Tag authentication
-    * @param pass 4-byte long password
+    * @param pwd 4-byte long password
     *
     * @return PACK as [ByteArray]
+    * @throws WrongPwdSizeException when provided PWD is not exactly 4 bytes long
     */
    @Throws(WrongPwdSizeException::class)
-   override fun auth(pass: ByteArray) {
-      if (pass.size != 4) { throw WrongPwdSizeException() }
+   override fun auth(pwd: ByteArray) {
+      if (pwd.size != 4) { throw WrongPwdSizeException() }
       mifareTag.transceive(
          byteArrayOf(
             pwdAuth,
-            *(pass.sliceArray(0..3))
+            *(pwd.sliceArray(0..3))
          )
       )
       // NOT THOROUGHLY TESTED
